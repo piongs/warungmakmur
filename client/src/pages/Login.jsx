@@ -13,6 +13,7 @@ export default function Login() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const googleBtnRef = useRef(null);
 
   useEffect(() => {
@@ -51,7 +52,8 @@ export default function Login() {
     setLoading(true);
     try {
       await loginWithGoogleToken(response.credential);
-      navigate("/dashboard");
+      setSuccess(true);
+      setTimeout(() => navigate("/dashboard"), 650);
     } catch (err) {
       setError(getErrorMessage(err, "Login Google gagal, coba lagi."));
     } finally {
@@ -71,7 +73,8 @@ export default function Login() {
         localStorage.setItem("pos_token", data.token);
         localStorage.setItem("pos_user", JSON.stringify(data.user));
       }
-      navigate("/dashboard");
+      setSuccess(true);
+      setTimeout(() => navigate("/dashboard"), 650);
     } catch (err) {
       setError(getErrorMessage(err, "Terjadi kesalahan, coba lagi."));
     } finally {
@@ -112,18 +115,18 @@ export default function Login() {
 
       {/* Form */}
       <div className="flex items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-2.5 mb-8">
+        <div className="w-full max-w-sm login-panel">
+          <div className="lg:hidden flex flex-col items-center gap-2 mb-8 login-brand">
             <div className="h-9 w-9 rounded-lg bg-primary text-white flex items-center justify-center font-bold">
               W
             </div>
             <span className="font-bold text-lg">Warung Makmur</span>
           </div>
 
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold text-center lg:text-left">
             {mode === "login" ? "Masuk ke kasir" : "Buat akun admin"}
           </h1>
-          <p className="text-muted text-sm mt-1.5">
+          <p className="text-muted text-sm mt-1.5 text-center lg:text-left">
             {mode === "login"
               ? "Masukkan email dan kata sandi untuk mulai berjualan."
               : "Untuk pengaturan pertama kali warung kamu."}
@@ -171,8 +174,16 @@ export default function Login() {
                 minLength={6}
               />
             </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
-              {loading ? "Memproses..." : mode === "login" ? "Masuk" : "Daftar & masuk"}
+            <button type="submit" disabled={loading || success} className="btn-primary w-full justify-center login-submit">
+              {success ? (
+                <span className="login-success-mark">✓ Berhasil masuk</span>
+              ) : loading ? (
+                "Memproses..."
+              ) : mode === "login" ? (
+                "Masuk"
+              ) : (
+                "Daftar & masuk"
+              )}
             </button>
           </form>
 
