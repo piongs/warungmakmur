@@ -39,7 +39,7 @@ export default function Receipt() {
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-pop print:shadow-none p-6 font-mono">
         <div className="text-center mb-4">
           <p className="font-bold text-base tracking-tight">WARUNG MAKMUR</p>
-          <p className="text-xs text-muted mt-1">Jl. Contoh No. 1, Kota Kamu</p>
+          <p className="text-xs text-muted mt-1">Jl. Ahmad Yani No. 43, Kota Bekasi</p>
         </div>
 
         <div className="border-t border-dashed border-line my-3" />
